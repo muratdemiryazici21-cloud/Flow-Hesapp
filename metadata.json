@@ -1,0 +1,6 @@
+{
+  "name": "Flow Hesap",
+  "description": "Flow ekosisteminin ortak hesap yönetim platformu. Tek hesap, tüm Flow hizmetleri.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

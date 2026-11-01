@@ -1,0 +1,338 @@
+{
+  "entities": {
+    "UserProfile": {
+      "title": "UserProfile",
+      "description": "Flow Hesap user profile data stored in Firestore",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "description": "Firebase Auth user UID",
+          "maxLength": 128
+        },
+        "displayName": {
+          "type": "string",
+          "description": "Full name of the user",
+          "maxLength": 100
+        },
+        "username": {
+          "type": "string",
+          "description": "Unique username in Flow ecosystem",
+          "maxLength": 30,
+          "pattern": "^[a-zA-Z0-9._-]+$"
+        },
+        "email": {
+          "type": "string",
+          "description": "User email address",
+          "maxLength": 150
+        },
+        "photoURL": {
+          "type": "string",
+          "description": "Profile picture URL or base64 image data",
+          "maxLength": 200000
+        },
+        "bio": {
+          "type": "string",
+          "description": "Short bio or tagline",
+          "maxLength": 250
+        },
+        "createdAt": {
+          "type": "string",
+          "description": "ISO timestamp of account creation"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last profile update"
+        }
+      },
+      "required": ["uid", "displayName", "username", "email", "createdAt"]
+    },
+    "UserSession": {
+      "title": "UserSession",
+      "description": "Active session on a device",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "deviceName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "deviceType": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "os": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "browser": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "ipAddress": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "lastActive": {
+          "type": "string"
+        },
+        "current": {
+          "type": "boolean"
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["id", "userId", "deviceName", "deviceType", "createdAt"]
+    },
+    "ConnectedDevice": {
+      "title": "ConnectedDevice",
+      "description": "Devices linked to Flow Account such as Windows, Android, macOS, FlowBrowser",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "deviceName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "deviceType": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "appName": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "linkedAt": {
+          "type": "string"
+        },
+        "lastSync": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "revoked"]
+        }
+      },
+      "required": ["id", "userId", "deviceName", "status", "linkedAt"]
+    },
+    "AuthorizedApp": {
+      "title": "AuthorizedApp",
+      "description": "Flow ecosystem applications authorized via OAuth/SSO flow",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "appName": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "authorizedAt": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["active", "revoked"]
+        },
+        "token": {
+          "type": "string",
+          "maxLength": 256
+        }
+      },
+      "required": ["id", "userId", "appName", "authorizedAt", "status"]
+    },
+    "SecurityLog": {
+      "title": "SecurityLog",
+      "description": "Audit record of login events and security activities",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "action": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "type": {
+          "type": "string",
+          "enum": ["login", "security", "device", "oauth", "profile"]
+        },
+        "deviceName": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "deviceType": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "os": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "browser": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "ipAddress": {
+          "type": "string",
+          "maxLength": 50
+        },
+        "location": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "timestamp": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["success", "warning", "info"]
+        }
+      },
+      "required": ["id", "userId", "action", "type", "timestamp", "status"]
+    },
+    "PrivacySettings": {
+      "title": "PrivacySettings",
+      "description": "User ecosystem sync and privacy preferences",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "flowBrowserBookmarksSync": {
+          "type": "boolean"
+        },
+        "flowBrowserPasswordsSync": {
+          "type": "boolean"
+        },
+        "flowBrowserTabsSync": {
+          "type": "boolean"
+        },
+        "searchHistorySync": {
+          "type": "boolean"
+        },
+        "musicSync": {
+          "type": "boolean"
+        },
+        "driveAutoSync": {
+          "type": "boolean"
+        },
+        "loginAlerts": {
+          "type": "boolean"
+        },
+        "marketingEmails": {
+          "type": "boolean"
+        },
+        "updatedAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId"]
+    },
+    "TwoFactorConfig": {
+      "title": "TwoFactorConfig",
+      "description": "Two factor authentication setup and backup recovery codes",
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "enabled": {
+          "type": "boolean"
+        },
+        "secret": {
+          "type": "string",
+          "maxLength": 100
+        },
+        "enabledAt": {
+          "type": "string"
+        }
+      },
+      "required": ["userId", "enabled"]
+    },
+    "UsernameDoc": {
+      "title": "UsernameDoc",
+      "description": "Username reservation document for uniqueness",
+      "type": "object",
+      "properties": {
+        "uid": {
+          "type": "string",
+          "maxLength": 128
+        },
+        "username": {
+          "type": "string",
+          "maxLength": 30
+        },
+        "createdAt": {
+          "type": "string"
+        }
+      },
+      "required": ["uid", "username"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "UserProfile",
+      "description": "User profile collection containing personal and account details"
+    },
+    "/users/{userId}/sessions/{sessionId}": {
+      "schema": "UserSession",
+      "description": "Active login sessions for the user"
+    },
+    "/users/{userId}/connectedDevices/{deviceId}": {
+      "schema": "ConnectedDevice",
+      "description": "Registered devices linked to the Flow account"
+    },
+    "/users/{userId}/authorizedApps/{appId}": {
+      "schema": "AuthorizedApp",
+      "description": "OAuth 2.0 authorized Flow applications (FlowBrowser, FlowDrive, etc.)"
+    },
+    "/users/{userId}/securityLogs/{logId}": {
+      "schema": "SecurityLog",
+      "description": "Audit trail of login events, device authorisations, and security actions."
+    },
+    "/users/{userId}/settings/privacy": {
+      "schema": "PrivacySettings",
+      "description": "User ecosystem sync and data privacy preferences"
+    },
+    "/users/{userId}/settings/twoFactor": {
+      "schema": "TwoFactorConfig",
+      "description": "2FA Authenticator TOTP and backup verification state"
+    },
+    "/usernames/{username}": {
+      "schema": "UsernameDoc",
+      "description": "Unique username registry to prevent duplicates across accounts"
+    }
+  }
+}
