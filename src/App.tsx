@@ -10,11 +10,12 @@ import { Footer } from './components/Footer';
 import { HomeView } from './components/HomeView';
 import { DashboardView } from './components/DashboardView';
 import { AuthModal } from './components/AuthModal';
+import { FlowBrowserAuthorize } from './components/FlowBrowserAuthorize';
 import { Loader2 } from 'lucide-react';
 
 function MainLayout() {
   const { user, loading } = useAuth();
-  const [view, setView] = useState<'home' | 'dashboard'>('home');
+  const [view, setView] = useState<'home' | 'dashboard' | 'authorize'>('home');
   const [activeTab, setActiveTab] = useState<string>('overview');
   const [authModalOpen, setAuthModalOpen] = useState(false);
   const [authMode, setAuthMode] = useState<'login' | 'register' | 'forgot'>('login');
@@ -22,7 +23,9 @@ function MainLayout() {
   // Initialize view and tab from initial window.location.pathname on mount
   useEffect(() => {
     const path = window.location.pathname;
-    if (path === '/login') {
+    if (path.startsWith('/flowbrowser/authorize')) {
+      setView('authorize');
+    } else if (path === '/login') {
       setView('home');
       setAuthMode('login');
       setAuthModalOpen(true);
@@ -56,7 +59,9 @@ function MainLayout() {
     // Handle browser popstate (back/forward buttons)
     const handlePopState = () => {
       const p = window.location.pathname;
-      if (p === '/login') {
+      if (p.startsWith('/flowbrowser/authorize')) {
+        setView('authorize');
+      } else if (p === '/login') {
         setView('home');
         setAuthMode('login');
         setAuthModalOpen(true);
@@ -162,7 +167,9 @@ function MainLayout() {
 
       {/* Main View Area */}
       <main className="flex-1">
-        {view === 'home' || !user ? (
+        {view === 'authorize' ? (
+          <FlowBrowserAuthorize />
+        ) : view === 'home' || !user ? (
           <HomeView
             onOpenAuth={handleOpenAuth}
             onGoToDashboard={handleGoToDashboard}
